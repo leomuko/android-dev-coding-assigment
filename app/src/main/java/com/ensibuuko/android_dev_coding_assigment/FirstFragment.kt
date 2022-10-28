@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ensibuuko.android_dev_coding_assigment.data.PostModel
 import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentFirstBinding
 import com.ensibuuko.android_dev_coding_assigment.features.posts.PostAdapter
+import com.ensibuuko.android_dev_coding_assigment.features.posts.PostClickListener
 import com.ensibuuko.android_dev_coding_assigment.features.posts.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 @AndroidEntryPoint
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(), PostClickListener {
 
     private val viewModel : PostsViewModel by viewModels()
 
@@ -40,10 +42,8 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
-        val postAdapter = PostAdapter()
+
+        val postAdapter = PostAdapter(this)
 
         binding.apply {
             postRecycler.apply {
@@ -54,7 +54,7 @@ class FirstFragment : Fragment() {
 
             viewModel.posts.observe(requireActivity()){posts->
                 postAdapter.submitList(posts)
-                binding.postProgressBar.visibility = View.GONE
+                postProgressBar.visibility = View.GONE
             }
         }
     }
@@ -62,5 +62,10 @@ class FirstFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPostClick(view: View, post: PostModel) {
+        val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(post.id)
+        findNavController().navigate(action)
     }
 }
