@@ -5,13 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentFirstBinding
+import com.ensibuuko.android_dev_coding_assigment.features.posts.PostAdapter
+import com.ensibuuko.android_dev_coding_assigment.features.posts.PostsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@AndroidEntryPoint
 class FirstFragment : Fragment() {
+
+    private val viewModel : PostsViewModel by viewModels()
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -32,8 +40,22 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+//        binding.buttonFirst.setOnClickListener {
+//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+//        }
+        val postAdapter = PostAdapter()
+
+        binding.apply {
+            postRecycler.apply {
+                adapter = postAdapter
+                layoutManager = LinearLayoutManager(requireActivity())
+
+            }
+
+            viewModel.posts.observe(requireActivity()){posts->
+                postAdapter.submitList(posts)
+                binding.postProgressBar.visibility = View.GONE
+            }
         }
     }
 
