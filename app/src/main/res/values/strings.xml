@@ -11,4 +11,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec tristique nibh. Nam ipsum dolor, sagittis nec leo vitae, vulputate rutrum arcu. Ut eget rutrum sem, molestie ultricies odio. Sed sed dui at quam elementum sollicitudin. Aliquam dapibus nisi eget dui accumsan semper</string>
     <string name="title_placeholder">Title</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

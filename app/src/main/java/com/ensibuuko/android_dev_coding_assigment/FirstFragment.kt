@@ -56,6 +56,12 @@ class FirstFragment : Fragment(), PostClickListener {
                 postAdapter.submitList(posts)
                 postProgressBar.visibility = View.GONE
             }
+
+            //navigate to make post fragment
+            fabAddPost.setOnClickListener {
+                val action = FirstFragmentDirections.actionFirstFragmentToAddPostFragment()
+                findNavController().navigate(action)
+            }
         }
     }
 
