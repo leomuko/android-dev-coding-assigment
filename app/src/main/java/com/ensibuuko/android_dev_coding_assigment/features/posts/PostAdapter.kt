@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ensibuuko.android_dev_coding_assigment.data.PostModel
 import com.ensibuuko.android_dev_coding_assigment.databinding.ItemPostBinding
 
-class PostAdapter : ListAdapter<PostModel, PostAdapter.PostViewHolder>(PostComparator()) {
+class PostAdapter(val postClickListener: PostClickListener) : ListAdapter<PostModel, PostAdapter.PostViewHolder>(PostComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding)
+        return PostViewHolder(binding, postClickListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -23,11 +23,14 @@ class PostAdapter : ListAdapter<PostModel, PostAdapter.PostViewHolder>(PostCompa
         }
     }
 
-    class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root){
+    class PostViewHolder(private val binding: ItemPostBinding, private val postClickListener: PostClickListener) : RecyclerView.ViewHolder(binding.root){
         fun bind(postModel: PostModel){
             binding.apply {
                 itemPostBody.text = postModel.body
                 itemPostTitle.text = postModel.title
+                postComment.setOnClickListener {
+                    postClickListener.onPostClick(it, postModel)
+                }
             }
         }
     }
