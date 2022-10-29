@@ -56,8 +56,6 @@ class AddPostFragment : Fragment() {
                         val action = AddPostFragmentDirections.actionAddPostFragmentToFirstFragment()
                         findNavController().navigate(action)
                     }
-
-
                 }
             }
         }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentFirstBindi
 import com.ensibuuko.android_dev_coding_assigment.features.posts.PostAdapter
 import com.ensibuuko.android_dev_coding_assigment.features.posts.PostClickListener
 import com.ensibuuko.android_dev_coding_assigment.features.posts.PostsViewModel
+import com.ensibuuko.android_dev_coding_assigment.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -52,9 +54,11 @@ class FirstFragment : Fragment(), PostClickListener {
 
             }
 
-            viewModel.posts.observe(requireActivity()){posts->
-                postAdapter.submitList(posts)
-                postProgressBar.visibility = View.GONE
+            viewModel.posts.observe(requireActivity()){result->
+                postAdapter.submitList(result.data)
+                postProgressBar.isVisible = result is Resource.Loading && result.data.isNullOrEmpty()
+                postErrorText.isVisible = result is Resource.Error && result.data.isNullOrEmpty()
+                postErrorText.text = result.error?.localizedMessage
             }
 
             //navigate to make post fragment
