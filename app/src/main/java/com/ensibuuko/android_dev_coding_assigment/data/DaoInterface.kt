@@ -27,6 +27,14 @@ interface DaoInterface {
     @Query("SELECT * FROM posts WHERE id=:id")
     fun fetchPostById(id : Int) : LiveData<PostModel>
 
+    //fetch Post By UserId
+    @Query("SELECT * FROM posts WHERE userId=:userId")
+    fun fetchUserPosts(userId : Int) : Flow<List<PostModel>>
+
+    //Delete User Posts
+    @Query("DELETE FROM posts WHERE userId=:userId")
+    suspend fun deleteAllUserPosts(userId: Int)
+
     //save comments to db
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertComments(comments : List<CommentModel>)

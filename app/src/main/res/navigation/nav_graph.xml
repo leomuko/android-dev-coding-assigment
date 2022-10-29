@@ -31,6 +31,9 @@
             android:name="postId"
             app:argType="integer"
             android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_SecondFragment_to_nav_posts"
+            app:destination="@id/nav_posts" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -44,12 +47,19 @@
     <fragment
         android:id="@+id/nav_posts"
         android:name="com.ensibuuko.android_dev_coding_assigment.UserPostsFragment"
-        android:label="fragment_user_posts"
-        tools:layout="@layout/fragment_user_posts" />
+        android:label="User Posts"
+        tools:layout="@layout/fragment_user_posts" >
+        <action
+            android:id="@+id/action_nav_posts_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_nav_posts_to_addPostFragment"
+            app:destination="@id/addPostFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.ensibuuko.android_dev_coding_assigment.AccountFragment"
-        android:label="fragment_account"
+        android:label="User Account"
         tools:layout="@layout/fragment_account" />
 
 </navigation>

@@ -28,6 +28,21 @@ class EnsibukoRepository @Inject constructor(
         }
     )
 
+    fun getUserPosts(userId : Int) = networkBoundResource(
+        query = {
+            dao.fetchUserPosts(userId)
+        },
+        fetch = {
+            api.getUserPosts(userId)
+        },
+        saveFetchResult = {posts ->
+            db.withTransaction {
+                dao.deleteAllUserPosts(userId)
+                dao.insertPost(posts)
+            }
+        }
+    )
+
     fun getComments(postId : Int) = networkBoundResource(
         query = {
             dao.fetchCommentsForPost(postId)

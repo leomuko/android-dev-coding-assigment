@@ -22,4 +22,7 @@ interface Api {
 
     @POST("/posts")
     suspend fun makePost(@Body params: RequestBody)  : PostModel
+
+    @GET("/users/{userId}/posts")
+    suspend fun getUserPosts(@Path("userId") userId : Int) : List<PostModel>
 }

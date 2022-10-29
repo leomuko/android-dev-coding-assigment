@@ -62,10 +62,10 @@ class FirstFragment : Fragment(), PostClickListener {
             }
 
             //navigate to make post fragment
-            fabAddPost.setOnClickListener {
-                val action = FirstFragmentDirections.actionFirstFragmentToAddPostFragment()
-                findNavController().navigate(action)
-            }
+//            fabAddPost.setOnClickListener {
+//                val action = FirstFragmentDirections.actionFirstFragmentToAddPostFragment()
+//                findNavController().navigate(action)
+//            }
         }
     }
 
