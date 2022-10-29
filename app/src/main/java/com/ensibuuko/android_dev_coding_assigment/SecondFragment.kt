@@ -1,6 +1,7 @@
 package com.ensibuuko.android_dev_coding_assigment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SecondFragment : Fragment() {
+
+    private val TAG = "SecondFragment"
 
     private val viewModel : CommentViewModel by viewModels()
 
@@ -58,6 +61,16 @@ class SecondFragment : Fragment() {
             viewModel.commentsLiveData.observe(requireActivity()){comments ->
                 commentsAdapter.submitList(comments)
                 commentProgressBar.visibility = View.GONE
+            }
+            viewModel.fetchPostById(args.postId)
+            viewModel.postLiveData?.observe(requireActivity()){post ->
+                try{
+                    postBody.text = post.body
+                    postTitle.text = post.title
+                }catch (e : Exception){
+                    Log.d(TAG, "onViewCreated: "+ e.message)
+                }
+
             }
         }
     }

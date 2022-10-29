@@ -1,5 +1,6 @@
 package com.ensibuuko.android_dev_coding_assigment.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -21,5 +22,10 @@ interface DaoInterface {
     //fetch Posts From Database
     @Query("SELECT * FROM posts")
     fun fetchAllPosts() : Flow<List<PostModel>>
+
+    //fetch Post By Id
+    @Query("SELECT * FROM posts WHERE id=:id")
+    fun fetchPostById(id : Int) : LiveData<PostModel>
+
 
 }
