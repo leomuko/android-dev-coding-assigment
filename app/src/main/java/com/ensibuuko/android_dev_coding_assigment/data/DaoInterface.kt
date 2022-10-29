@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface DaoInterface {
 
 
-    //replace data from api with same id
+    //save posts to db
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPost(posts : List<PostModel>)
 
@@ -26,6 +26,18 @@ interface DaoInterface {
     //fetch Post By Id
     @Query("SELECT * FROM posts WHERE id=:id")
     fun fetchPostById(id : Int) : LiveData<PostModel>
+
+    //save comments to db
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertComments(comments : List<CommentModel>)
+
+    //Delete Comments for specific post From Db
+    @Query("DELETE FROM comments WHERE postId=:postId")
+    suspend fun deleteAllPostComments(postId : Int)
+
+    //fetch comments for specific post from db
+    @Query("SELECT * FROM comments WHERE postId=:postId")
+    fun fetchCommentsForPost(postId : Int) : Flow<List<CommentModel>>
 
 
 }

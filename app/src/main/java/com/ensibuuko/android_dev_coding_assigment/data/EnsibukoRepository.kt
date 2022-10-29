@@ -28,6 +28,21 @@ class EnsibukoRepository @Inject constructor(
         }
     )
 
+    fun getComments(postId : Int) = networkBoundResource(
+        query = {
+            dao.fetchCommentsForPost(postId)
+        },
+        fetch = {
+            api.getComments(postId)
+        },
+        saveFetchResult = {comments ->
+            db.withTransaction {
+                dao.deleteAllPostComments(postId)
+                dao.insertComments(comments)
+            }
+        }
+    )
+
     fun getPostById(id : Int) : LiveData<PostModel> {
         dao.fetchPostById(id).value?.body?.let { Log.d("Repository", it) }
         return dao.fetchPostById(id)

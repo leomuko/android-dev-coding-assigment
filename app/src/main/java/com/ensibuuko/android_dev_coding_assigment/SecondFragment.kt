@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentSecondBinding
 import com.ensibuuko.android_dev_coding_assigment.features.comments.CommentAdapter
 import com.ensibuuko.android_dev_coding_assigment.features.comments.CommentViewModel
+import com.ensibuuko.android_dev_coding_assigment.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -58,9 +60,13 @@ class SecondFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireActivity())
             }
             viewModel.fetchComments(args.postId)
-            viewModel.commentsLiveData.observe(requireActivity()){comments ->
-                commentsAdapter.submitList(comments)
-                commentProgressBar.visibility = View.GONE
+            viewModel.commentsLiveData?.observe(requireActivity()){result ->
+                commentsAdapter.submitList(result.data)
+
+                commentProgressBar.isVisible = result is Resource.Loading && result.data.isNullOrEmpty()
+                commentError.isVisible = result is Resource.Error && result.data.isNullOrEmpty()
+                commentError.text = result.error?.localizedMessage
+
             }
             viewModel.fetchPostById(args.postId)
             viewModel.postLiveData?.observe(requireActivity()){post ->
