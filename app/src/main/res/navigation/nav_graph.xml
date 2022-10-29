@@ -40,9 +40,10 @@
         android:name="com.ensibuuko.android_dev_coding_assigment.AddPostFragment"
         android:label="Add Post"
         tools:layout="@layout/fragment_add_post" >
+
         <action
-            android:id="@+id/action_addPostFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_addPostFragment_to_nav_posts"
+            app:destination="@id/nav_posts" />
     </fragment>
     <fragment
         android:id="@+id/nav_posts"

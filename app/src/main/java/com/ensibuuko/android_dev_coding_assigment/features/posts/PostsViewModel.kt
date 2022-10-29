@@ -19,6 +19,7 @@ class PostsViewModel  @Inject constructor(
 
     val posts = repository.getPosts().asLiveData()
     val makePostReply = MutableLiveData<PostModel>()
+    var  postReply : LiveData<PostModel>? = null
 
     fun fetchUserPosts(userId: Int) : LiveData<Resource<List<PostModel>>>{
         return repository.getUserPosts(userId).asLiveData()
@@ -28,9 +29,16 @@ class PostsViewModel  @Inject constructor(
     fun makePost(title : String, body : String, userId : Int){
         viewModelScope.launch {
             val postMade = api.makePost(createJsonRequestBody("title" to title, "body" to body, "userId" to userId))
+            repository.saveUserPosts(postMade)
             makePostReply.value = postMade
         }
 
+    }
+
+    fun fetchPostById(postId: Int){
+        viewModelScope.launch {
+            postReply = repository.getPostById(postId)
+        }
     }
 
     private fun createJsonRequestBody(vararg params: Pair<String, Any>) =

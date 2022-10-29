@@ -15,6 +15,9 @@ interface DaoInterface {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPost(posts : List<PostModel>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSinglePost(post : PostModel)
+
     //Delete Posts on Network Refresh
     @Query("DELETE FROM posts")
     suspend fun deleteAllPosts()

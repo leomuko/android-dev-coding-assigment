@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.withTransaction
 import com.ensibuuko.android_dev_coding_assigment.api.Api
 import com.ensibuuko.android_dev_coding_assigment.util.networkBoundResource
+import okhttp3.RequestBody
+import org.json.JSONObject
 import javax.inject.Inject
 
 class EnsibukoRepository @Inject constructor(
@@ -37,11 +39,17 @@ class EnsibukoRepository @Inject constructor(
         },
         saveFetchResult = {posts ->
             db.withTransaction {
-                dao.deleteAllUserPosts(userId)
+                //dao.deleteAllUserPosts(userId)
                 dao.insertPost(posts)
             }
         }
     )
+
+    suspend fun saveUserPosts(post : PostModel) {
+        dao.insertSinglePost(post)
+    }
+
+
 
     fun getComments(postId : Int) = networkBoundResource(
         query = {

@@ -49,12 +49,23 @@ class AddPostFragment : Fragment() {
                     //do post
                     //make posts to user with id 1
                     viewModel.makePost(title, body, 1)
+
                     viewModel.makePostReply.observe(requireActivity()){
                         Log.d(TAG, "onViewCreated: "+ it.body + " " + it.title)
-                        Snackbar.make(view, "Post Made Successfully", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-                        addPostProgressBar.visibility = View.GONE
-                        val action = AddPostFragmentDirections.actionAddPostFragmentToFirstFragment()
-                        findNavController().navigate(action)
+
+                        viewModel.fetchPostById(it.id)
+                        viewModel.postReply?.observe(requireActivity()){post ->
+                            try{
+                                Snackbar.make(view, "Post Made Successfully", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                                addPostProgressBar.visibility = View.GONE
+                                val action = AddPostFragmentDirections.actionAddPostFragmentToNavPosts()
+                                findNavController().navigate(action)
+                            }catch (e : Exception){
+                                Log.d(TAG, "onViewCreated: "+ e.message)
+                            }
+
+                        }
+
                     }
                 }
             }
