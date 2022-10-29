@@ -3,10 +3,7 @@ package com.ensibuuko.android_dev_coding_assigment.api
 import com.ensibuuko.android_dev_coding_assigment.data.CommentModel
 import com.ensibuuko.android_dev_coding_assigment.data.PostModel
 import okhttp3.RequestBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface Api {
 
@@ -25,4 +22,7 @@ interface Api {
 
     @GET("/users/{userId}/posts")
     suspend fun getUserPosts(@Path("userId") userId : Int) : List<PostModel>
+
+    @PUT("/posts/1")
+    suspend fun updateUserPost(@Body params: RequestBody) : PostModel
 }

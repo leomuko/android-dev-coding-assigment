@@ -58,8 +58,6 @@ class UserPostsFragment : Fragment(), PostClickListener {
 
             //navigate to make post fragment
             fabAddPost.setOnClickListener {
-//                val action = FirstFragmentDirections.actionFirstFragmentToAddPostFragment()
-//                findNavController().navigate(action)
                 val action = UserPostsFragmentDirections.actionNavPostsToAddPostFragment()
                 findNavController().navigate(action)
             }

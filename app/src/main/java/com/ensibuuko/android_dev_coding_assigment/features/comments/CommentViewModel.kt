@@ -5,6 +5,8 @@ import com.ensibuuko.android_dev_coding_assigment.api.Api
 import com.ensibuuko.android_dev_coding_assigment.data.CommentModel
 import com.ensibuuko.android_dev_coding_assigment.data.EnsibukoRepository
 import com.ensibuuko.android_dev_coding_assigment.data.PostModel
+import com.ensibuuko.android_dev_coding_assigment.util.Helpers
+import com.ensibuuko.android_dev_coding_assigment.util.Helpers.Companion.createJsonRequestBody
 import com.ensibuuko.android_dev_coding_assigment.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,13 +20,8 @@ class CommentViewModel @Inject constructor(
      //val commentsLiveData = MutableLiveData<List<CommentModel>>()
      var  postLiveData : LiveData<PostModel>? = null
     var commentsLiveData : LiveData<Resource<List<CommentModel>>>? = null
+    val updatePostReply = MutableLiveData<PostModel>()
 
-//    fun fetchComments(postId : Int){
-//        viewModelScope.launch {
-//            val comments = api.getComments(postId)
-//            commentsLiveData.value = comments
-//        }
-//    }
 
     fun fetchComments(postId: Int){
         commentsLiveData =  repository.getComments(postId).asLiveData()
@@ -35,4 +32,20 @@ class CommentViewModel @Inject constructor(
             postLiveData = repository.getPostById(postId)
         }
     }
+
+    fun updatePost(title : String, body : String, userId : Int, postId: Int){
+        viewModelScope.launch {
+            val post = api.updateUserPost(
+                createJsonRequestBody(
+                    "id" to postId,
+                    "title" to title,
+                    "body" to body,
+                    "userId" to userId
+                )
+            )
+            repository.saveUserPosts(post)
+            updatePostReply.value = post
+        }
+    }
+
 }

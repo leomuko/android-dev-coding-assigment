@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.ensibuuko.android_dev_coding_assigment.api.Api
 import com.ensibuuko.android_dev_coding_assigment.data.EnsibukoRepository
 import com.ensibuuko.android_dev_coding_assigment.data.PostModel
+import com.ensibuuko.android_dev_coding_assigment.util.Helpers.Companion.createJsonRequestBody
 import com.ensibuuko.android_dev_coding_assigment.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -41,8 +42,5 @@ class PostsViewModel  @Inject constructor(
         }
     }
 
-    private fun createJsonRequestBody(vararg params: Pair<String, Any>) =
-        RequestBody.create(
-            okhttp3.MediaType.parse("application/json; charset=utf-8"),
-            JSONObject(mapOf(*params)).toString())
+
 }

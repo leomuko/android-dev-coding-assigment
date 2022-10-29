@@ -48,11 +48,6 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.buttonSecond.setOnClickListener {
-//            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-//        }
-
-
         val commentsAdapter = CommentAdapter()
         binding.apply {
             commentsRecyclerView.apply {
@@ -66,7 +61,6 @@ class SecondFragment : Fragment() {
                 commentProgressBar.isVisible = result is Resource.Loading && result.data.isNullOrEmpty()
                 commentError.isVisible = result is Resource.Error && result.data.isNullOrEmpty()
                 commentError.text = result.error?.localizedMessage
-
             }
             viewModel.fetchPostById(args.postId)
             viewModel.postLiveData?.observe(requireActivity()){post ->
@@ -77,6 +71,20 @@ class SecondFragment : Fragment() {
                     Log.d(TAG, "onViewCreated: "+ e.message)
                 }
 
+            }
+
+            editPost.setOnClickListener {
+                //to edit
+                val action = SecondFragmentDirections.actionSecondFragmentToEditPostFragment(args.postId)
+                findNavController().navigate(action)
+            }
+
+            deletePost.setOnClickListener {
+                //to delete
+            }
+
+            commentPost.setOnClickListener {
+              //to comment
             }
         }
     }
