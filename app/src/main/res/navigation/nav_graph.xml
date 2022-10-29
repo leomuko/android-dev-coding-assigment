@@ -41,4 +41,15 @@
             android:id="@+id/action_addPostFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_posts"
+        android:name="com.ensibuuko.android_dev_coding_assigment.UserPostsFragment"
+        android:label="fragment_user_posts"
+        tools:layout="@layout/fragment_user_posts" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.ensibuuko.android_dev_coding_assigment.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
+
 </navigation>
