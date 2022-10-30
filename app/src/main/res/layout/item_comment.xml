@@ -74,6 +74,28 @@
                 android:textSize="16.7sp" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_linearView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/item_editComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_edit"
+                android:layout_weight="1" />
+            <ImageView
+                android:id="@+id/item_deleteComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_delete"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
 
 

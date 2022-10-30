@@ -23,6 +23,7 @@ class CommentViewModel @Inject constructor(
     val updatePostReply = MutableLiveData<PostModel>()
     val deletePostReply = MutableLiveData<Int>()
     val saveCommentReply = MutableLiveData<Long>()
+    val deleteCommentReply = MutableLiveData<Int>()
 
 
     fun fetchComments(postId: Int){
@@ -58,6 +59,12 @@ class CommentViewModel @Inject constructor(
     fun insertCommentInDb(commentModel: CommentModel){
         viewModelScope.launch {
             saveCommentReply.value = repository.insertNewComment(commentModel)
+        }
+    }
+
+    fun deleteComment(commentModel: CommentModel){
+        viewModelScope.launch {
+            deleteCommentReply.value = repository.deleteComment(commentModel)
         }
     }
 

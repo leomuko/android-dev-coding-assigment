@@ -80,4 +80,8 @@ class EnsibukoRepository @Inject constructor(
     suspend fun insertNewComment(commentModel: CommentModel) : Long{
         return dao.insertSingleComment(commentModel)
     }
+
+    suspend fun deleteComment(commentModel: CommentModel) : Int{
+        return dao.deleteComment(commentModel)
+    }
 }

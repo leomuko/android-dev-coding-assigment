@@ -52,8 +52,12 @@ interface DaoInterface {
     @Query("SELECT * FROM comments WHERE postId=:postId")
     fun fetchCommentsForPost(postId : Int) : Flow<List<CommentModel>>
 
-    //Delete Post By Id
+    //Delete Post
     @Delete
     suspend fun deletePost(post :PostModel) : Int
+
+    //Delete Comment By Id
+    @Delete
+    suspend fun deleteComment(comment: CommentModel) : Int
 
 }
