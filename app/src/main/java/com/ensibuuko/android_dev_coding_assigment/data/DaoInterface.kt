@@ -40,6 +40,10 @@ interface DaoInterface {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertComments(comments : List<CommentModel>)
 
+    //save single comment to db
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSingleComment(comment : CommentModel) : Long
+
     //Delete Comments for specific post From Db
     @Query("DELETE FROM comments WHERE postId=:postId")
     suspend fun deleteAllPostComments(postId : Int)

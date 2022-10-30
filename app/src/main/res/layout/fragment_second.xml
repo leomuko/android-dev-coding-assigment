@@ -85,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/postCard"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/commentsView"/>
     <ProgressBar
         android:id="@+id/commentProgressBar"
         android:layout_width="wrap_content"
@@ -106,4 +106,38 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/commentsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_margin="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/commentTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="Comment Here"
+                android:paddingEnd="8dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/sendCommentBtn"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_send_24"
+            android:backgroundTint="@color/black"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

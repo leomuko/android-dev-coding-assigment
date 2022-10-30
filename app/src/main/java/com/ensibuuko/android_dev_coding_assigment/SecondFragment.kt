@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ensibuuko.android_dev_coding_assigment.data.CommentModel
 import com.ensibuuko.android_dev_coding_assigment.data.PostModel
 import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentSecondBinding
 import com.ensibuuko.android_dev_coding_assigment.features.comments.CommentAdapter
@@ -35,6 +36,7 @@ class SecondFragment : Fragment() {
 
     private val args: SecondFragmentArgs by navArgs()
     private var myPostModel: PostModel? = null
+    private var numberOfComments : Int = 0;
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -66,6 +68,7 @@ class SecondFragment : Fragment() {
             viewModel.fetchComments(args.postId)
             viewModel.commentsLiveData?.observe(requireActivity()) { result ->
                 commentsAdapter.submitList(result.data)
+                numberOfComments = result.data?.size!!
 
                 commentProgressBar.isVisible =
                     result is Resource.Loading && result.data.isNullOrEmpty()
@@ -124,8 +127,48 @@ class SecondFragment : Fragment() {
                         .setAction("Action", null).show()
                 }
 
-                commentPost.setOnClickListener {
-                    //to comment
+
+            }
+            sendCommentBtn.setOnClickListener {
+                //to comment
+                commentProgressBar.isVisible = true
+                if(isNetworkAvailable(requireContext())){
+                    val comment = commentTv.text.toString()
+                    if(comment.isNullOrEmpty()){
+                        commentProgressBar.isVisible = false
+                        Snackbar.make(view, "Comment Field Is Null", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }else{
+                        //Make Comment model with generic id, names and email
+                        val commentModel = CommentModel(args.postId, (numberOfComments + 1), "Local User", "localuser@email.com", comment)
+                        viewModel.insertCommentInDb(commentModel)
+                        viewModel.saveCommentReply.observe(requireActivity()){
+
+                            if(it > 0){
+                                commentProgressBar.isVisible = false
+                                Snackbar.make(
+                                    view,
+                                    "Success: Comment Saved",
+                                    Snackbar.LENGTH_LONG
+                                ).setAction("Action", null).show()
+                                commentTv.setText("")
+                            }else{
+                                commentProgressBar.isVisible = false
+                                Snackbar.make(
+                                    view,
+                                    "Error: "+ it,
+                                    Snackbar.LENGTH_LONG
+                                ).setAction("Action", null).show()
+                            }
+                        }
+                    }
+
+                }else{
+                    Snackbar.make(
+                        view,
+                        "Error: No Network Connection Detected",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null).show()
                 }
             }
         }

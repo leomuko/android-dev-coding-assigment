@@ -61,7 +61,7 @@ class EnsibukoRepository @Inject constructor(
         },
         saveFetchResult = {comments ->
             db.withTransaction {
-                dao.deleteAllPostComments(postId)
+                //dao.deleteAllPostComments(postId)
                 dao.insertComments(comments)
             }
         }
@@ -75,5 +75,9 @@ class EnsibukoRepository @Inject constructor(
     suspend fun deletePostById(post: PostModel) : Int{
         api.deletePost(post.id)
         return dao.deletePost(post)
+    }
+
+    suspend fun insertNewComment(commentModel: CommentModel) : Long{
+        return dao.insertSingleComment(commentModel)
     }
 }
