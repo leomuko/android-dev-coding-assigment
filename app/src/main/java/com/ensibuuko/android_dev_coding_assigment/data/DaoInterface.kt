@@ -60,4 +60,7 @@ interface DaoInterface {
     @Delete
     suspend fun deleteComment(comment: CommentModel) : Int
 
+    //Updating Comments
+    @Query("UPDATE comments SET name = :name WHERE id= :id")
+    suspend fun updateComment(id: Int, name: String)
 }

@@ -39,7 +39,6 @@ class SecondFragment : Fragment(), CommentClickListener {
 
     private val args: SecondFragmentArgs by navArgs()
     private var myPostModel: PostModel? = null
-    private var numberOfComments: Int = 0;
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -64,6 +63,7 @@ class SecondFragment : Fragment(), CommentClickListener {
             editPost.isVisible = args.isUser
             deletePost.isVisible = args.isUser
 
+            //Populate Comments Recycler View
             commentsRecyclerView.apply {
                 adapter = commentsAdapter
                 layoutManager = LinearLayoutManager(requireActivity())
@@ -71,13 +71,14 @@ class SecondFragment : Fragment(), CommentClickListener {
             viewModel.fetchComments(args.postId)
             viewModel.commentsLiveData?.observe(requireActivity()) { result ->
                 commentsAdapter.submitList(result.data)
-                numberOfComments = result.data?.size!!
 
                 commentProgressBar.isVisible =
                     result is Resource.Loading && result.data.isNullOrEmpty()
                 commentError.isVisible = result is Resource.Error && result.data.isNullOrEmpty()
                 commentError.text = result.error?.localizedMessage
             }
+
+            //Populate Post View
             viewModel.fetchPostById(args.postId)
             viewModel.postLiveData?.observe(requireActivity()) { post ->
                 myPostModel = post
@@ -90,6 +91,7 @@ class SecondFragment : Fragment(), CommentClickListener {
 
             }
 
+            //Edit Post
             editPost.setOnClickListener {
                 //to edit
                 val action =
@@ -97,6 +99,7 @@ class SecondFragment : Fragment(), CommentClickListener {
                 findNavController().navigate(action)
             }
 
+            //Delete Posts
             deletePost.setOnClickListener {
                 if (isNetworkAvailable(requireContext())) {
                     //to delete
@@ -136,6 +139,8 @@ class SecondFragment : Fragment(), CommentClickListener {
 
 
             }
+
+            //Save Comment
             sendCommentBtn.setOnClickListener {
                 //to comment
                 commentProgressBar.isVisible = true
@@ -149,7 +154,7 @@ class SecondFragment : Fragment(), CommentClickListener {
                         //Make Comment model with generic id, names and email
                         val commentModel = CommentModel(
                             args.postId,
-                            (numberOfComments + 1),
+                            (2000..5000).random(),
                             "Local User",
                             "localuser@email.com",
                             comment
@@ -194,28 +199,21 @@ class SecondFragment : Fragment(), CommentClickListener {
 
     override fun onEditClick(view: View, comment: CommentModel) {
         //to edit
+        if (comment.name == "Local User") {
+            val builder = AlertDialog.Builder(requireContext())
+            val inflater = layoutInflater
+            val dialogLayout = inflater.inflate(R.layout.edit_text_layout, null)
+            val editText = dialogLayout.findViewById<EditText>(R.id.commentEditText)
 
-        val builder = AlertDialog.Builder(requireContext())
-        val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.edit_text_layout, null)
-        val editText = dialogLayout.findViewById<EditText>(R.id.commentEditText)
+            with(builder) {
+                setTitle("Edit Comment")
+                setPositiveButton("OK") { dialog, which ->
+                    val body = editText.text.toString()
+                    comment.body = body
+                    binding.apply {
+                        if (isNetworkAvailable(requireContext())) {
 
-        with(builder) {
-            setTitle("Edit Comment")
-            setPositiveButton("OK") { dialog, which ->
-                val name = editText.text.toString()
-                binding.apply {
-                    if (isNetworkAvailable(requireContext())) {
 
-                        if (myPostModel?.userId != 1) {
-                            commentProgressBar.isVisible = false
-                            Snackbar.make(
-                                view,
-                                "Info: User Can Only Edit Personal Comments",
-                                Snackbar.LENGTH_LONG
-                            )
-                                .setAction("Action", null).show()
-                        } else {
                             viewModel.insertCommentInDb(comment)
                             viewModel.saveCommentReply.observe(requireActivity()) {
 
@@ -223,7 +221,7 @@ class SecondFragment : Fragment(), CommentClickListener {
                                     commentProgressBar.isVisible = false
                                     Snackbar.make(
                                         view,
-                                        "Success: Comment Updated",
+                                        "Success: Comment Edited",
                                         Snackbar.LENGTH_LONG
                                     ).setAction("Action", null).show()
                                     commentTv.setText("")
@@ -236,38 +234,56 @@ class SecondFragment : Fragment(), CommentClickListener {
                                     ).setAction("Action", null).show()
                                 }
                             }
-                        }
 
-                    } else {
-                        Snackbar.make(
-                            view,
-                            "Error: No Network Connection Detected",
-                            Snackbar.LENGTH_LONG
-                        ).setAction("Action", null).show()
+
+                        } else {
+                            Snackbar.make(
+                                view,
+                                "Error: No Network Connection Detected",
+                                Snackbar.LENGTH_LONG
+                            ).setAction("Action", null).show()
+                        }
                     }
                 }
-            }
-            setNegativeButton("Cancel") { dialog, which ->
+                setNegativeButton("Cancel") { dialog, which ->
 
+                }
+                setView(dialogLayout)
+                show()
             }
-            setView(dialogLayout)
-            show()
+        } else {
+            binding.commentProgressBar.isVisible = false
+            Snackbar.make(
+                view,
+                "You Can Only Edit Personal Comments",
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null).show()
         }
+
 
     }
 
     override fun onDeleteClick(comment: CommentModel) {
         //to delete
-        viewModel.deleteComment(comment)
-        viewModel.deleteCommentReply.observe(requireActivity()){
-            if (it == 1){
-                Snackbar.make(
-                    requireView(),
-                    "Comment Deleted Successfully",
-                    Snackbar.LENGTH_LONG
-                ).setAction("Action", null).show()
+        if (comment.name == "Local User") {
+            viewModel.deleteComment(comment)
+            viewModel.deleteCommentReply.observe(requireActivity()) {
+                if (it == 1) {
+                    Snackbar.make(
+                        requireView(),
+                        "Comment Deleted Successfully",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null).show()
+                }
             }
+        } else {
+            Snackbar.make(
+                requireView(),
+                "You Can Only Delete Personal Comments",
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null).show()
         }
+
     }
 
 }

@@ -68,4 +68,10 @@ class CommentViewModel @Inject constructor(
         }
     }
 
+    fun updateComment(commentModel: CommentModel){
+        viewModelScope.launch {
+            repository.updateComment(commentModel)
+         }
+    }
+
 }

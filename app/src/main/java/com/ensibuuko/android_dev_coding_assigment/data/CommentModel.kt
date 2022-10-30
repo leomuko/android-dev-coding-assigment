@@ -9,5 +9,5 @@ data class CommentModel (
     @PrimaryKey val id : Int,
     val name : String,
     val email : String,
-    val body : String
+    var body : String
     )

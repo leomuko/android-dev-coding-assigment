@@ -84,4 +84,8 @@ class EnsibukoRepository @Inject constructor(
     suspend fun deleteComment(commentModel: CommentModel) : Int{
         return dao.deleteComment(commentModel)
     }
+
+    suspend fun updateComment(commentModel: CommentModel){
+        dao.updateComment(commentModel.id, commentModel.name)
+    }
 }

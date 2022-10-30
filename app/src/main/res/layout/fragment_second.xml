@@ -50,13 +50,6 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/commentPost"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_comment"
-                    android:layout_weight="1"/>
-
-                <ImageView
                     android:id="@+id/editPost"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
