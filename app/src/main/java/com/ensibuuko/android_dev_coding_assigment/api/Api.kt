@@ -25,4 +25,7 @@ interface Api {
 
     @PUT("/posts/1")
     suspend fun updateUserPost(@Body params: RequestBody) : PostModel
+
+    @DELETE("/posts/{postId}")
+    suspend fun deletePost(@Path("postId") postId: Int)
 }

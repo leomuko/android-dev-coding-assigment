@@ -31,6 +31,10 @@
             android:name="postId"
             app:argType="integer"
             android:defaultValue="0"/>
+        <argument
+            android:name="isUser"
+            app:argType="boolean"
+            android:defaultValue="false"/>
         <action
             android:id="@+id/action_SecondFragment_to_nav_posts"
             app:destination="@id/nav_posts" />
@@ -77,6 +81,9 @@
         <action
             android:id="@+id/action_editPostFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_editPostFragment_to_nav_posts"
+            app:destination="@id/nav_posts" />
     </fragment>
 
 </navigation>

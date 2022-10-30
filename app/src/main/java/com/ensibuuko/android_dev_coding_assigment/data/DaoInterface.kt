@@ -1,18 +1,16 @@
 package com.ensibuuko.android_dev_coding_assigment.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import retrofit2.http.DELETE
 
 @Dao
 interface DaoInterface {
 
 
     //save posts to db
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPost(posts : List<PostModel>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -50,5 +48,8 @@ interface DaoInterface {
     @Query("SELECT * FROM comments WHERE postId=:postId")
     fun fetchCommentsForPost(postId : Int) : Flow<List<CommentModel>>
 
+    //Delete Post By Id
+    @Delete
+    suspend fun deletePost(post :PostModel) : Int
 
 }

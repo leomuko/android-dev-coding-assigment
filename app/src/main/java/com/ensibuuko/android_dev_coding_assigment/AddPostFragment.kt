@@ -10,14 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentAddPostBinding
 import com.ensibuuko.android_dev_coding_assigment.features.posts.PostsViewModel
+import com.ensibuuko.android_dev_coding_assigment.util.Helpers
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddPostFragment : Fragment() {
 
-    private  var _binding : FragmentAddPostBinding? = null
-    private val viewModel : PostsViewModel by viewModels()
+    private var _binding: FragmentAddPostBinding? = null
+    private val viewModel: PostsViewModel by viewModels()
     private val TAG = "AddPostFragment"
 
     private val binding get() = _binding!!
@@ -39,33 +40,48 @@ class AddPostFragment : Fragment() {
                 val body = postBody.text.toString()
                 val title = postTitle.text.toString()
 
-                if (title.isEmpty()){
+                if (title.isEmpty()) {
                     addPostProgressBar.visibility = View.GONE
-                    Snackbar.make(view, "Error: Title Field Is Empty", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-                }else if (body.isEmpty()){
+                    Snackbar.make(view, "Error: Title Field Is Empty", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                } else if (body.isEmpty()) {
                     addPostProgressBar.visibility = View.GONE
-                    Snackbar.make(view, "Error: Body Field Is Empty", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-                }else{
+                    Snackbar.make(view, "Error: Body Field Is Empty", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                } else {
                     //do post
                     //make posts to user with id 1
-                    viewModel.makePost(title, body, 1)
+                    if (Helpers.isNetworkAvailable(requireContext())) {
+                        viewModel.makePost(title, body, 1)
 
-                    viewModel.makePostReply.observe(requireActivity()){
-                        Log.d(TAG, "onViewCreated: "+ it.body + " " + it.title)
+                        viewModel.makePostReply.observe(requireActivity()) {
+                            Log.d(TAG, "onViewCreated: " + it.body + " " + it.title)
 
-                        viewModel.fetchPostById(it.id)
-                        viewModel.postReply?.observe(requireActivity()){post ->
-                            try{
-                                Snackbar.make(view, "Post Made Successfully", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-                                addPostProgressBar.visibility = View.GONE
-                                val action = AddPostFragmentDirections.actionAddPostFragmentToNavPosts()
-                                findNavController().navigate(action)
-                            }catch (e : Exception){
-                                Log.d(TAG, "onViewCreated: "+ e.message)
+                            viewModel.fetchPostById(it.id)
+                            viewModel.postReply?.observe(requireActivity()) { post ->
+                                try {
+                                    Snackbar.make(
+                                        view,
+                                        "Post Made Successfully",
+                                        Snackbar.LENGTH_LONG
+                                    ).setAction("Action", null).show()
+                                    addPostProgressBar.visibility = View.GONE
+                                    val action =
+                                        AddPostFragmentDirections.actionAddPostFragmentToNavPosts()
+                                    findNavController().navigate(action)
+                                } catch (e: Exception) {
+                                    Log.d(TAG, "onViewCreated: " + e.message)
+                                }
+
                             }
 
                         }
-
+                    }else{
+                        Snackbar.make(
+                            view,
+                            "Error: No Network Connection Detected",
+                            Snackbar.LENGTH_LONG
+                        ).setAction("Action", null).show()
                     }
                 }
             }

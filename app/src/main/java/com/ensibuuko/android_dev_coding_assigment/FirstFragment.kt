@@ -61,11 +61,6 @@ class FirstFragment : Fragment(), PostClickListener {
                 postErrorText.text = result.error?.localizedMessage
             }
 
-            //navigate to make post fragment
-//            fabAddPost.setOnClickListener {
-//                val action = FirstFragmentDirections.actionFirstFragmentToAddPostFragment()
-//                findNavController().navigate(action)
-//            }
         }
     }
 
@@ -75,7 +70,7 @@ class FirstFragment : Fragment(), PostClickListener {
     }
 
     override fun onPostClick(view: View, post: PostModel) {
-        val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(post.id)
+        val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(post.id, false)
         findNavController().navigate(action)
     }
 }

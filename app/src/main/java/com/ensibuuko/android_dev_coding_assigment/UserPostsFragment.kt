@@ -69,7 +69,7 @@ class UserPostsFragment : Fragment(), PostClickListener {
     }
 
     override fun onPostClick(view: View, post: PostModel) {
-        val action = UserPostsFragmentDirections.actionNavPostsToSecondFragment(post.id)
+        val action = UserPostsFragmentDirections.actionNavPostsToSecondFragment(post.id, true)
         findNavController().navigate(action)
     }
 

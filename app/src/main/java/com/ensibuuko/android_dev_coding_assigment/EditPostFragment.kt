@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ensibuuko.android_dev_coding_assigment.databinding.FragmentEditPostBinding
 import com.ensibuuko.android_dev_coding_assigment.features.comments.CommentViewModel
+import com.ensibuuko.android_dev_coding_assigment.util.Helpers.Companion.isNetworkAvailable
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +22,7 @@ class EditPostFragment : Fragment() {
     private val viewModel: CommentViewModel by viewModels()
     private var _binding: FragmentEditPostBinding? = null
     private val TAG = "EditPostFragment"
+
 
     private val args: EditPostFragmentArgs by navArgs()
 
@@ -40,6 +42,9 @@ class EditPostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+
         binding.apply {
 
 
@@ -54,41 +59,58 @@ class EditPostFragment : Fragment() {
 
             }
 
-
             updatePost.setOnClickListener {
-                val title = postTitle.text.toString()
-                val body = postBody.text.toString()
-                addPostProgressBar.visibility = View.VISIBLE
-                if (title.isEmpty()){
-                    addPostProgressBar.visibility = View.GONE
-                    Snackbar.make(view, "Error: Title Field Is Empty", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-                }else if (body.isEmpty()){
-                    addPostProgressBar.visibility = View.GONE
-                    Snackbar.make(view, "Error: Body Field Is Empty", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-                }else{
-                viewModel.updatePost(title, body, 1, args.postId)
-                viewModel.updatePostReply.observe(requireActivity()) { post ->
 
-                    viewModel.fetchPostById(post.id)
-                    viewModel.postLiveData?.observe(requireActivity()) {
-                        try {
-                            Snackbar.make(view, "Post Updated Successfully", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show()
+
+                    if (isNetworkAvailable(requireContext())) {
+                        val title = postTitle.text.toString()
+                        val body = postBody.text.toString()
+                        addPostProgressBar.visibility = View.VISIBLE
+                        if (title.isEmpty()) {
                             addPostProgressBar.visibility = View.GONE
-                            val action = EditPostFragmentDirections.actionEditPostFragmentToSecondFragment(args.postId)
-                            findNavController().navigate(action)
-                        } catch (e: Exception) {
-                            Log.d(TAG, "onViewCreated: " + e.message)
+                            Snackbar.make(view, "Error: Title Field Is Empty", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show()
+                        } else if (body.isEmpty()) {
+                            addPostProgressBar.visibility = View.GONE
+                            Snackbar.make(view, "Error: Body Field Is Empty", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show()
+                        } else {
+                            viewModel.updatePost(title, body, 1, args.postId)
+                            viewModel.updatePostReply.observe(requireActivity()) { post ->
+
+                                viewModel.fetchPostById(post.id)
+                                viewModel.postLiveData?.observe(requireActivity()) {
+                                    try {
+                                        Snackbar.make(
+                                            view,
+                                            "Post Updated Successfully",
+                                            Snackbar.LENGTH_LONG
+                                        )
+                                            .setAction("Action", null).show()
+                                        addPostProgressBar.visibility = View.GONE
+                                        val action =
+                                            EditPostFragmentDirections.actionEditPostFragmentToNavPosts()
+                                        findNavController().navigate(action)
+                                    } catch (e: Exception) {
+                                        Log.d(TAG, "onViewCreated: " + e.message)
+                                    }
+
+                                }
+                            }
+
+
                         }
-
+                    }else{
+                        Snackbar.make(view, "Error: No Internet Connection Detected", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
                     }
-                }
 
 
-        }}
+            }
         }
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
