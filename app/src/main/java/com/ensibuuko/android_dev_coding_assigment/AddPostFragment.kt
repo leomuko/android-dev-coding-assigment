@@ -77,6 +77,7 @@ class AddPostFragment : Fragment() {
 
                         }
                     }else{
+                        addPostProgressBar.visibility = View.GONE
                         Snackbar.make(
                             view,
                             "Error: No Network Connection Detected",

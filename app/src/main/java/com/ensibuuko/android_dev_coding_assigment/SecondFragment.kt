@@ -129,6 +129,7 @@ class SecondFragment : Fragment(), CommentClickListener {
                     }
 
                 } else {
+                    commentProgressBar.isVisible = false
                     Snackbar.make(
                         view,
                         "Error: No Network Connection Detected",
@@ -182,6 +183,7 @@ class SecondFragment : Fragment(), CommentClickListener {
                     }
 
                 } else {
+                    commentProgressBar.isVisible = false
                     Snackbar.make(
                         view,
                         "Error: No Network Connection Detected",
@@ -243,6 +245,7 @@ class SecondFragment : Fragment(), CommentClickListener {
 
 
                         } else {
+                            commentProgressBar.isVisible = false
                             Snackbar.make(
                                 view,
                                 "Error: No Network Connection Detected",
@@ -271,6 +274,7 @@ class SecondFragment : Fragment(), CommentClickListener {
 
     override fun onDeleteClick(comment: CommentModel) {
         //to delete
+        if (isNetworkAvailable(requireContext())) {
         if (comment.name == "Local User") {
             viewModel.deleteComment(comment)
             viewModel.deleteCommentReply.observe(requireActivity()) {
@@ -286,6 +290,13 @@ class SecondFragment : Fragment(), CommentClickListener {
             Snackbar.make(
                 requireView(),
                 "You Can Only Delete Personal Comments",
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null).show()
+        }
+        }else{
+            Snackbar.make(
+                requireView(),
+                "Error: No Network Connection Detected",
                 Snackbar.LENGTH_LONG
             ).setAction("Action", null).show()
         }
