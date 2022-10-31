@@ -28,6 +28,9 @@ interface DaoInterface {
     @Query("SELECT * FROM posts WHERE id=:id")
     fun fetchPostById(id : Int) : LiveData<PostModel>
 
+    @Query("SELECT * FROM posts WHERE id=:id")
+    fun fetchSinglePostById(id : Int) : PostModel
+
     //fetch Post By UserId
     @Query("SELECT * FROM posts WHERE userId=:userId")
     fun fetchUserPosts(userId : Int) : Flow<List<PostModel>>
@@ -51,6 +54,10 @@ interface DaoInterface {
     //fetch comments for specific post from db
     @Query("SELECT * FROM comments WHERE postId=:postId")
     fun fetchCommentsForPost(postId : Int) : Flow<List<CommentModel>>
+
+    //fetch comment by id
+    @Query("SELECT * FROM comments WHERE id=:id")
+    fun fetchCommentById(id : Int) : CommentModel
 
     //Delete Post
     @Delete
