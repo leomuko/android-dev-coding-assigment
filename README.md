@@ -13,10 +13,12 @@ Tech Stack Used
 - Kotlin
 - Android Studio
 - Network bound resource
-- Hilt / Dependency Injection
+- Hilt For Dependency Injection
 - Retrofit
 - Room Database
 - Kotlin Flows
+- Kotlin Coroutines
+- Unit Tests
 
 
 Assumptions Made
