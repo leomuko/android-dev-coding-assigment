@@ -189,6 +189,12 @@ class SecondFragment : Fragment(), CommentClickListener {
                     ).setAction("Action", null).show()
                 }
             }
+
+            //view User Profile
+            viewUserProfile.setOnClickListener {
+                val action = SecondFragmentDirections.actionSecondFragmentToNavProfile(myPostModel!!.userId)
+                findNavController().navigate(action)
+            }
         }
     }
 

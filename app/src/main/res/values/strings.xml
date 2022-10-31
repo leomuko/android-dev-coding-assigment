@@ -16,4 +16,5 @@
     <string name="home">Home</string>
     <string name="my_posts">My Posts</string>
     <string name="account">Account</string>
+    <string name="viewProfile"><u>View User Profile</u></string>
 </resources>

@@ -11,6 +11,17 @@
         android:padding="12dp">
 
         <TextView
+            android:id="@+id/item_viewProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/viewProfile"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"/>
+
+        <TextView
             android:id="@+id/item_postTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

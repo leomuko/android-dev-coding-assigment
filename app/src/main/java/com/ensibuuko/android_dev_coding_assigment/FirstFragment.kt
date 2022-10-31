@@ -70,7 +70,18 @@ class FirstFragment : Fragment(), PostClickListener {
     }
 
     override fun onPostClick(view: View, post: PostModel) {
-        val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(post.id, false)
+        if(post.userId == 1){
+            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(post.id, true)
+            findNavController().navigate(action)
+        }else{
+            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(post.id, false)
+            findNavController().navigate(action)
+        }
+
+    }
+
+    override fun onViewProfileClick(view: View, post: PostModel) {
+        val action = FirstFragmentDirections.actionFirstFragmentToNavProfile(post.userId)
         findNavController().navigate(action)
     }
 }

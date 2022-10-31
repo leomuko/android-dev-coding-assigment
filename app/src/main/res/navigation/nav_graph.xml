@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_addPostFragment"
             app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_nav_profile"
+            app:destination="@id/nav_profile" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -41,6 +44,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_editPostFragment"
             app:destination="@id/editPostFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_nav_profile"
+            app:destination="@id/nav_profile" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -63,12 +69,20 @@
         <action
             android:id="@+id/action_nav_posts_to_addPostFragment"
             app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/action_nav_posts_to_nav_profile"
+            app:destination="@id/nav_profile" />
     </fragment>
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.ensibuuko.android_dev_coding_assigment.AccountFragment"
         android:label="User Account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="1"/>
+    </fragment>
     <fragment
         android:id="@+id/editPostFragment"
         android:name="com.ensibuuko.android_dev_coding_assigment.EditPostFragment"

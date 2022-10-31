@@ -2,6 +2,7 @@ package com.ensibuuko.android_dev_coding_assigment.features.posts
 
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -30,6 +31,9 @@ class PostAdapter(val postClickListener: PostClickListener) : ListAdapter<PostMo
                 itemPostTitle.text = postModel.title
                 postComment.setOnClickListener {
                     postClickListener.onPostClick(it, postModel)
+                }
+                itemViewProfile.setOnClickListener {
+                    postClickListener.onViewProfileClick(it, postModel)
                 }
             }
         }

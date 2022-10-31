@@ -73,4 +73,9 @@ class UserPostsFragment : Fragment(), PostClickListener {
         findNavController().navigate(action)
     }
 
+    override fun onViewProfileClick(view: View, post: PostModel) {
+        val action = UserPostsFragmentDirections.actionNavPostsToNavProfile(post.userId)
+        findNavController().navigate(action)
+    }
+
 }
